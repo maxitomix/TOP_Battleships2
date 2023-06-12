@@ -1,6 +1,6 @@
 function Ship(name, length){
     let hits = Array(length).fill(false);
-
+  
     return{
         name,
         length,
@@ -13,5 +13,8 @@ function Ship(name, length){
         }
     }
 }
+
+
+
 
 export  { Ship};

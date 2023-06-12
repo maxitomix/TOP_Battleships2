@@ -7,7 +7,7 @@
 }
 
 body{
-    height: 100dvh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,7 +20,7 @@ body{
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
-    margin-bottom: 3rem;
+   
     background-color: aquamarine;
 
     .miss{
@@ -42,4 +42,83 @@ body{
     align-items: center;
     justify-content: center;
     border: 1px dashed rgba(0, 13, 255, 0.58);
+}
+
+.roster{
+
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem;
+    gap: 1rem;
+
+
+}
+
+
+.roster .roster-area{
+    width: 400px;
+    height: 100px;
+    background-color:antiquewhite;
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.roster .controls{
+    width: 100px;
+    height: 100px;
+    background-color: rgb(196, 255, 215);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+
+
+.destroyer-roster{
+    width: 30px;
+    height: 10px;
+}
+
+.destroyer{
+    background-color: brown
+}
+
+.battleship-roster{
+    width: 40px;
+    height: 10px;
+}
+
+.battleship{
+    background-color:blue
+}
+
+.submarine-roster{
+    width: 30px;
+    height: 10px;
+}
+
+.submarine{
+    background-color:darkgreen
+}
+.carrier-roster{
+    width: 50px;
+    height: 10px;
+}
+
+.carrier{
+    background-color:darkmagenta
+}
+
+.tug-roster{
+    width: 20px;
+    height: 10px;
+}
+
+.tug{
+    background-color:gold
 }
