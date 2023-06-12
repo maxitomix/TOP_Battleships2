@@ -24,6 +24,12 @@ function displayBoard(board){
                 cellClickLogic(cell);
             })
 
+            cell.addEventListener('dragover', (e) =>{
+                e.preventDefault();
+            })
+
+            cell.addEventListener('drop',  handleDrop)
+
             cell.classList.add('cell');
             grid.appendChild(cell);
         }
@@ -38,5 +44,16 @@ function cellClickLogic(cell){
         cell.dataset.content = 'miss'
 
 }
+
+function handleDrop(e){
+    let dataCoord = e.target.getAttribute('data-coord')
+    console.log(dataCoord);
+    let data = e.dataTransfer.getData("text");
+    console.log('Dropped data: ', data);
+
+}
+
+
+
 
 export  { Gameboard, displayBoard};

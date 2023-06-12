@@ -53,7 +53,7 @@ function rotate(){
 }
 
 rosterShips.forEach(rostership => {
-    rostership.addEventListener('dragstart',dragShipStart)
+    rostership.addEventListener('dragstart', dragShipStart)
 })
 
 rosterShips.forEach(rostership => {
@@ -61,8 +61,15 @@ rosterShips.forEach(rostership => {
 })
 
 
-function dragShipStart(){
-    console.log('drag-start')
+function dragShipStart(e){
+    console.log('drag-start');
+    // console.log(this.getAttribute('data-size'));
+    let dataSize = this.getAttribute('data-size');
+    // console.log(this.getAttribute('data-name'));
+    let dataName = this.getAttribute('data-name');
+    console.log('text', dataSize +','+ dataName)
+    e.dataTransfer.setData('text', dataSize +','+ dataName);
+
   }
 
 function dragShipEnd(){
