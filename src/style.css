@@ -11,17 +11,30 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 }
 
-.container{
-    width: 600px;
-    height: 600px;
+.grid{
+    width: 500px;
+    height: 500px;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
     margin-bottom: 3rem;
     background-color: aquamarine;
+
+    .miss{
+        background-color: grey;
+    }
+}
+
+.container{
+
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem;
+    gap: 4rem;
+
 }
 
 .cell {

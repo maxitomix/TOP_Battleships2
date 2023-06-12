@@ -9,20 +9,34 @@ function Gameboard(){
 
 function displayBoard(board){
     let content = document.getElementsByClassName('container')[0];
+    let grid = document.createElement('div');
+    grid.classList.add('grid');
+    content.appendChild(grid)
     
-        for (let row = 0; row < board.length; row++) {
-            for (let col = 0; col < board[row].length; col++) {
-                let cell = document.createElement('div');
-                // cell.textContent = board[row][col];
-                cell.dataset.coord = `${row}, ${col}`
-                cell.addEventListener('click', () =>{
-                    console.log(cell.textContent)
-                })
-                // addClickFunctionality(cell)
-                cell.classList.add('cell');
-                content.appendChild(cell);
-            }
+    for (let col = 0; col < board.length; col++) {
+        for (let row = 0; row < board[col].length; row++) {
+
+            let cell = document.createElement('div');
+            cell.dataset.coord = `${row}, ${col}`
+            cell.dataset.content = 'water'
+
+            cell.addEventListener('click', () =>{
+                cellClickLogic(cell);
+            })
+
+            cell.classList.add('cell');
+            grid.appendChild(cell);
         }
-    }    
+    }
+}    
+
+function cellClickLogic(cell){
+    console.log(cell.dataset.coord)
+    cell.dataset.content === 'ship'? 
+        cell.dataset.content = 'hit':
+        cell.classList.add('miss') 
+        cell.dataset.content = 'miss'
+
+}
 
 export  { Gameboard, displayBoard};
