@@ -7,7 +7,6 @@ import { Gameboard, displayBoard } from './gameboard.js';
 
 const container = document.getElementsByClassName('container')[0]
 
-
 let destroyerP1 = new Ship('destroyerP1', 3)
 
 console.log(destroyerP1)
