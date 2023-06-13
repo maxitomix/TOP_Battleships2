@@ -1,8 +1,25 @@
+
+
 function Gameboard(){
     let board = Array(10).fill(null).map(() => Array(10).fill(null))
 
+    function placeShip(dataCoord, dataDropped){ 
+        let grid = document.getElementsByClassName('grid')[0];
+        console.log(grid)
+        let orientation;
+        rosterAngle === '0deg'? orientation = 'horizontal':'vertical';
+        console.log(orientation)
+        
+        // for (let i = 0; i < length; col++) {
+   
+        //     grid.dataset.coord = `${row}, ${col}`
+        //     grid.dataset.content = 'water'
+
+    }
+
     return{
         board,
+        placeShip
     }
 }
 
@@ -48,12 +65,10 @@ function cellClickLogic(cell){
 function handleDrop(e){
     let dataCoord = e.target.getAttribute('data-coord')
     console.log(dataCoord);
-    let data = e.dataTransfer.getData("text");
-    console.log('Dropped data: ', data);
+    let dataDropped = e.dataTransfer.getData("text");
+    console.log('Dropped data: ', dataDropped);
+    player1.placeShip(dataCoord,dataDropped )
 
 }
 
 
-
-
-export  { Gameboard, displayBoard};

@@ -15,6 +15,3 @@ function Ship(name, length){
 }
 
 
-
-
-export  { Ship};
