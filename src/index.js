@@ -67,31 +67,43 @@ function Gameboard(){
         let cell = grid.querySelector(`.cell[data-coord="${col},${row}"]`)
         console.log(cell)
         console.log(name,size)
-        // cell.dataset.content = name;
-        // cell.classList.add(name)
-        let numCol = Number(col)
-        let numRow = Number(row)
-        let stringCol 
-        let stringRow
-        for (let i = 0; i < size; i++){
-            stringCol = (numCol+i).toString()
-            stringRow = (numRow+i).toString()
-            if (rosterAngle === '0deg'){
-                console.log(`.cell[data-coord="${stringCol},${row}"]`)
-                cell = grid.querySelector(`.cell[data-coord="${stringCol},${row}"]`)
-                console.log(cell)
-               
-            }
-            if (rosterAngle === '90deg'){
-                console.log(`.cell[data-coord="${col},${stringRow}"]`)
-                cell = grid.querySelector(`.cell[data-coord="${col}, ${stringRow}"]`)
-                console.log(cell)
-            }
 
-            cell.dataset.content = name;
-            cell.classList.add(name)
+        
+        if (checkOutOfBounds(col, row, size)){
+            
+            let numCol = Number(col)
+            let numRow = Number(row)
+            let stringCol 
+            let stringRow
+            for (let i = 0; i < size; i++){
+                stringCol = (numCol+i).toString()
+                stringRow = (numRow+i).toString()
 
-        }
+                if (rosterAngle === '0deg'){
+    
+                    console.log(`.cell[data-coord="${stringCol},${row}"]`)
+                    cell = grid.querySelector(`.cell[data-coord="${stringCol},${row}"]`)
+                    console.log(cell)
+                
+                }
+                if (rosterAngle === '90deg'){
+                   
+                    console.log(`.cell[data-coord="${col},${stringRow}"]`)
+                    cell = grid.querySelector(`.cell[data-coord="${col}, ${stringRow}"]`)
+                    console.log(cell)
+                }
+
+                cell.dataset.content = name;
+                cell.classList.add(name)
+                let rosterItem = roster.getElementsByClassName(`${name}-roster`)[0];
+                rosterItem.remove()
+            }
+            
+        }else {
+            console.log('unable to place ship. try somewhere else.')    
+
+    } 
+
     }
 
    
@@ -100,6 +112,37 @@ function Gameboard(){
         placeShip
     }
 }
+
+
+function checkOutOfBounds(col, row, size) {
+    let grid = document.getElementsByClassName('grid')[0];
+    let numCol = Number(col);
+    let numRow = Number(row);
+    let stringCol, stringRow;
+
+    for (let i = 0; i < size; i++) {
+        if (rosterAngle === '0deg') {
+            stringCol = (numCol + i).toString();
+            let cell = grid.querySelector(`.cell[data-coord="${stringCol},${row}"]`);
+            if (!cell || cell.dataset.content !== 'water') return false;
+        }
+        if (rosterAngle === '90deg') {
+            console.log('start debug',col)
+            console.log(numRow)
+            stringRow = (numRow + i).toString();
+            console.log(stringRow)
+            console.log(`.cell[data-coord="${col}, ${stringRow}"]`)
+            let cell = grid.querySelector(`.cell[data-coord="${col}, ${stringRow}"]`);
+            console.log(cell)
+            if (!cell || cell.dataset.content !== 'water') return false;
+        }
+    }
+    return true;
+}
+
+
+
+
 
 //----display-----
 function displayBoard(board){
@@ -136,6 +179,10 @@ function cellClickLogic(cell){
     if (cell.dataset.content === 'water') {
         cell.dataset.content = 'miss'
         cell.classList.add('miss') 
+    }
+    if (cell.dataset.content !== 'water' && cell.dataset.content !== 'miss') {
+        cell.dataset.content = 'hit'
+        cell.classList.add('hit') 
     }
     if (cell.dataset.content === 'miss') {
         return

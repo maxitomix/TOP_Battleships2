@@ -15,8 +15,8 @@ body{
 }
 
 .grid{
-    width: 500px;
-    height: 500px;
+    width: 400px;
+    height: 400px;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
@@ -25,6 +25,10 @@ body{
 
     .miss{
         background-color: grey;
+    }
+
+    .hit{
+        background-color: red;
     }
 }
 
