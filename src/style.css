@@ -126,3 +126,14 @@ body{
 .tug{
     background-color:gold
 }
+
+.blink {
+    
+    background-color: black;
+    color: white;
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    75% { opacity: 0; }
+}

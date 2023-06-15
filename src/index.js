@@ -8,12 +8,11 @@ const info = document.getElementsByClassName('info')[0]
 const roster = document.getElementsByClassName('roster')[0];
 const controls = document.getElementsByClassName('controls')[0];
 let rosterAngle = '0deg'
-let currentPlayer 
-
-
-
+let currentPlayer;
+let rosterShips = [] 
 
 //-------------------
+
 
 
 //-------roster area
@@ -40,11 +39,10 @@ function displayRoster() {
         rosterArea.appendChild(shipDiv);
     });
 
-    // Append the rosterArea to your container (or another element in your DOM)
     
     roster.appendChild(rosterArea);
 
-    const rosterShips = Array.from(rosterArea.children)
+    rosterShips = Array.from(rosterArea.children)
 
     rosterShips.forEach(rostership => {
         rostership.addEventListener('dragstart', dragShipStart)
@@ -56,9 +54,6 @@ function displayRoster() {
 
     return 
 }
-
-
-
 
 
 
@@ -93,15 +88,9 @@ function displayControls(){
     controls.appendChild(rotateBtn);
     controls.appendChild(resetBtn);
 
-    
-    
-    
-    
-    // const resetBtn = document.getElementById('reset');
+
     resetBtn.addEventListener('click', reset)
     
-   
-    // const rotateBtn = document.getElementById('rotate');
     rotateBtn.addEventListener('click', rotate)
     
     
@@ -109,7 +98,9 @@ function displayControls(){
 
 function reset(){
     rosterAngle =  '0deg';
+    rosterShips = [] 
     container.innerHTML = '';
+    roster.innerHTML = '';
     game()
 }
 
@@ -174,6 +165,7 @@ function Gameboard(name){
             
         }else {
             info.textContent = 'unable to place ship. try somewhere else.'
+            blinkElement(info)
             console.log('unable to place ship. try somewhere else.')    
         } 
 
@@ -190,7 +182,6 @@ function Gameboard(name){
 
 
 function checkOutOfBounds(col, row, size) {
-    // let grid = document.getElementsByClassName('grid')[0];
     let grid = document.querySelector(`.grid[data-player="${currentPlayer.name}"]`);
     let numCol = Number(col);
     let numRow = Number(row);
@@ -256,15 +247,29 @@ function cellClickLogic(cell){
     if (cell.dataset.content === 'water') {
         cell.dataset.content = 'miss'
         cell.classList.add('miss') 
+        info.textContent = 'Miss...'
+        blinkElement(info)
+        console.log('Miss...')  
     }
     if (cell.dataset.content !== 'water' && cell.dataset.content !== 'miss') {
         cell.dataset.content = 'hit'
         cell.classList.add('hit') 
+        info.textContent = 'Its a HIT!'
+        console.log('Its a HIT!')  
+        blinkElement(info)
     }
     if (cell.dataset.content === 'miss') {
+
         return
     }
 
+function blinkElement(element) {
+    element.classList.add('blink'); // Add the blink class
+
+    setTimeout(() => {
+        element.classList.remove('blink'); // Remove the blink class after 1 second
+    }, 1000);
+}
        
 
 }
@@ -296,11 +301,12 @@ function Ship(name, length){
     }
 }
 
-function game(){
-    //---run code 
-    // let destroyerP1 = new Ship('destroyerP1', 3)
 
-    // console.log(destroyerP1)
+//-----------------ship end
+
+function game(){
+
+
 
     let player1 = new Gameboard('player1')
     let player2 = new Gameboard('player2')
@@ -309,15 +315,12 @@ function game(){
 
 
     console.log(player1)
-    // console.log(player2)
+
 
     displayBoard(player1.board)
     displayRoster();
     displayControls();
-    // currentPlayer = 'player2'
-    // displayBoard(player2.board)
 
-    // console.log(destroyerP1.name)
 }
 
 game()
