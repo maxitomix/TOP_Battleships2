@@ -275,6 +275,10 @@ function cellClickLogic(cell){
             info.textContent = `Its a HIT! You sank a${ship.name}`
             console.log(`Its a HIT! You sank a${ship.name}`)  
             blinkElement(info)
+            currentPlayer.ships = currentPlayer.ships.filter(x => x.name !== ship.name)
+            console.log(currentPlayer.ships)
+
+            checkForGameEnd()
 
         } else{
 
@@ -292,6 +296,25 @@ function cellClickLogic(cell){
     }
     
 }
+
+
+
+function checkForGameEnd(){
+    if(currentPlayer.ships.length === 0) {
+        setTimeout(function(){
+            console.log(`You won! All ships sunk`);
+            info.textContent = `You won! All ships sunk`
+            blinkElement(info)
+        }, 1000)
+        setTimeout(function(){
+            blinkElement(info)
+        }, 3000)
+        setTimeout(function(){
+            blinkElement(info)
+        }, 5000)
+    }    
+}
+
 
 function blinkElement(element) {
     element.classList.add('blink'); // Add the blink class
@@ -311,22 +334,6 @@ function handleDrop(e){
 }
 
 
-//---------------ship
-// function Ship(name, length){
-//     let hits = Array(length).fill(false);
-  
-//     return{
-//         name,
-//         length,
-//         hits,
-//         hit: function(position){
-//             hits[position] = true;
-//         },
-//         isSunk: function(){
-//             return hits.every((hit) => hit === true);
-//         }
-//     }
-// }
 
 function Ship(name, length){
     let hits = length
