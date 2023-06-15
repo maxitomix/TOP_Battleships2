@@ -10,6 +10,8 @@ const controls = document.getElementsByClassName('controls')[0];
 let rosterAngle = '0deg'
 let currentPlayer;
 let rosterShips = [] 
+let player1;
+let player2;
 
 //-------------------
 
@@ -101,6 +103,7 @@ function reset(){
     rosterShips = [] 
     container.innerHTML = '';
     roster.innerHTML = '';
+    controls.innerHTML = '';
     game()
 }
 
@@ -116,12 +119,11 @@ function rotate(){
 
 function Gameboard(name){
     let board = Array(10).fill(null).map(() => Array(10).fill(null));
-    
+    let ships = [];
+
     function placeShip(dataCoord, dataDropped){ 
-        // let grid = document.getElementsByClassName('grid')[0];
-        // let grid = currentPlayer.board
+
         let grid = document.querySelector(`.grid[data-player="${currentPlayer.name}"]`);
-        // console.log(grid)
         let  [col,row] = dataCoord.split(',')
         let [size,name] = dataDropped.split(',')
         console.log(col, row)
@@ -155,13 +157,15 @@ function Gameboard(name){
                 }
 
                 cell.dataset.content = name;
-                cell.classList.add(name)
-
+                cell.classList.add(name);
             }
 
             const rosterArea = document.getElementsByClassName('roster-area')[0];
             let rosterItem = rosterArea.getElementsByClassName(`${name}-roster`)[0];
             rosterItem.remove()
+            let newShip = new Ship(name, size);
+            ships.push(newShip);
+            console.log(ships)
             
         }else {
             info.textContent = 'unable to place ship. try somewhere else.'
@@ -176,7 +180,8 @@ function Gameboard(name){
     return{
         board,
         placeShip,
-        name
+        name,
+        ships,
     }
 }
 
@@ -251,17 +256,42 @@ function cellClickLogic(cell){
         blinkElement(info)
         console.log('Miss...')  
     }
-    if (cell.dataset.content !== 'water' && cell.dataset.content !== 'miss') {
-        cell.dataset.content = 'hit'
-        cell.classList.add('hit') 
-        info.textContent = 'Its a HIT!'
-        console.log('Its a HIT!')  
-        blinkElement(info)
-    }
-    if (cell.dataset.content === 'miss') {
 
+    if (cell.dataset.content !== 'water' && cell.dataset.content !== 'miss' && cell.dataset.content !== 'hit') {
+
+        let shipName = cell.dataset.content;
+        // let ship = currentPlayer.ships
+        let ship = currentPlayer.ships.find(ship => ship.name === shipName);
+        console.log(shipName)
+        console.log(ship)
+        console.log(ship.getHits())
+        ship.hit()
+        console.log(ship)
+        console.log(ship.getHits())
+
+        if (ship.isSunk()){
+            cell.dataset.content = 'hit'
+            cell.classList.add('hit') 
+            info.textContent = `Its a HIT! You sank a${ship.name}`
+            console.log(`Its a HIT! You sank a${ship.name}`)  
+            blinkElement(info)
+
+        } else{
+
+            cell.dataset.content = 'hit'
+            cell.classList.add('hit') 
+            info.textContent = 'Its a HIT!'
+            console.log('Its a HIT!')  
+            blinkElement(info)
+    
+        }
+
+
+    }else{
         return
     }
+    
+}
 
 function blinkElement(element) {
     element.classList.add('blink'); // Add the blink class
@@ -270,37 +300,52 @@ function blinkElement(element) {
         element.classList.remove('blink'); // Remove the blink class after 1 second
     }, 1000);
 }
-       
-
-}
 
 function handleDrop(e){
     let dataCoord = e.target.getAttribute('data-coord')
     console.log(dataCoord);
     let dataDropped = e.dataTransfer.getData("text");
     console.log('Dropped data: ', dataDropped);
-    currentPlayer.placeShip(dataCoord,dataDropped )
+    currentPlayer.placeShip(dataCoord,dataDropped)
 
 }
 
 
 //---------------ship
+// function Ship(name, length){
+//     let hits = Array(length).fill(false);
+  
+//     return{
+//         name,
+//         length,
+//         hits,
+//         hit: function(position){
+//             hits[position] = true;
+//         },
+//         isSunk: function(){
+//             return hits.every((hit) => hit === true);
+//         }
+//     }
+// }
+
 function Ship(name, length){
-    let hits = Array(length).fill(false);
+    let hits = length
   
     return{
         name,
         length,
         hits,
-        hit: function(position){
-            hits[position] = true;
+        hit: function(){
+            hits = hits - 1;
         },
         isSunk: function(){
-            return hits.every((hit) => hit === true);
+            return hits === 0;
+        },
+        getHits: function(){
+            return hits;
         }
     }
 }
-
 
 //-----------------ship end
 
@@ -308,8 +353,8 @@ function game(){
 
 
 
-    let player1 = new Gameboard('player1')
-    let player2 = new Gameboard('player2')
+    player1 = new Gameboard('player1')
+    player2 = new Gameboard('player2')
 
     currentPlayer = player1
 
