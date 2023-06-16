@@ -12,7 +12,7 @@ let currentPlayer;
 let rosterShips = [] 
 let player1;
 let player2;
-
+let isPlacingShips = true
 //-------------------
 
 
@@ -57,8 +57,6 @@ function displayRoster() {
 
     return 
 }
-
-
 
 function dragShipStart(e){
     console.log('drag-start');
@@ -105,6 +103,8 @@ function reset(){
     container.innerHTML = '';
     roster.innerHTML = '';
     controls.innerHTML = '';
+    isPlacingShips = true;
+    info.textContent = 'Player 1: Place your ships'
     game()
 }
 
@@ -172,6 +172,10 @@ function Gameboard(name){
             const rosterArea = document.getElementsByClassName('roster-area')[0];
             let rosterItem = rosterArea.getElementsByClassName(`${name}-roster`)[0];
             rosterItem.remove()
+            if (currentPlayer.ships.length === 5) {
+                isPlacingShips = false;
+                info.textContent = 'Player1: Your turn to SHOOT!'
+            }
             }
             
         }else {
@@ -265,52 +269,60 @@ function displayBoard(board){
 }    
 
 function cellClickLogic(cell){
-    console.log(cell.dataset.coord)
-    if (cell.dataset.content === 'water') {
-        cell.dataset.content = 'miss'
-        cell.classList.add('miss') 
-        info.textContent = 'Miss...'
-        blinkElement(info)
-        console.log('Miss...')  
-    }
+    if (!isPlacingShips && cell.parentNode.dataset.player !== currentPlayer.name) {
+        
 
-    if (cell.dataset.content !== 'water' && cell.dataset.content !== 'miss' && cell.dataset.content !== 'hit') {
-
-        let shipName = cell.dataset.content;
-        // let ship = currentPlayer.ships
-        let ship = currentPlayer.ships.find(ship => ship.name === shipName);
-        console.log(shipName)
-        console.log(ship)
-        console.log(ship.getHits())
-        ship.hit()
-        console.log(ship)
-        console.log(ship.getHits())
-
-        if (ship.isSunk()){
-            cell.dataset.content = 'hit'
-            cell.classList.add('hit') 
-            info.textContent = `Its a HIT! You sank a ${ship.name}`
-            console.log(`Its a HIT! You sank a ${ship.name}`)  
+        console.log(cell.dataset.coord)
+        if (cell.dataset.content === 'water') {
+            cell.dataset.content = 'miss'
+            cell.classList.add('miss') 
+            info.textContent = 'Miss...'
             blinkElement(info)
-            currentPlayer.ships = currentPlayer.ships.filter(x => x.name !== ship.name)
-            console.log(currentPlayer.ships)
-
-            checkForGameEnd()
-
-        } else{
-
-            cell.dataset.content = 'hit'
-            cell.classList.add('hit') 
-            info.textContent = 'Its a HIT!'
-            console.log('Its a HIT!')  
-            blinkElement(info)
-    
+            console.log('Miss...')  
+            switchPlayer()
         }
 
+        if (cell.dataset.content !== 'water' && cell.dataset.content !== 'miss' && cell.dataset.content !== 'hit') {
 
-    }else{
-        return
+            let shipName = cell.dataset.content;
+            // let ship = currentPlayer.ships
+            let ship = currentPlayer.ships.find(ship => ship.name === shipName);
+            console.log(shipName)
+            console.log(ship)
+            console.log(ship.getHits())
+            ship.hit()
+            console.log(ship)
+            console.log(ship.getHits())
+
+            if (ship.isSunk()){
+                cell.dataset.content = 'hit'
+                cell.classList.add('hit') 
+                info.textContent = `Its a HIT! You sank a ${ship.name}`
+                console.log(`Its a HIT! You sank a ${ship.name}`)  
+                blinkElement(info)
+                currentPlayer.ships = currentPlayer.ships.filter(x => x.name !== ship.name)
+                console.log(currentPlayer.ships)
+
+                checkForGameEnd()
+                switchPlayer()
+
+            } else{
+
+                cell.dataset.content = 'hit'
+                cell.classList.add('hit') 
+                info.textContent = 'Its a HIT!'
+                console.log('Its a HIT!')  
+                blinkElement(info)
+                switchPlayer()
+        
+            }
+
+        }else{
+            return
+        }
+
     }
+    
     
 }
 
@@ -412,22 +424,24 @@ function placeShipsRandom(currentPlayer) {
     rosterAngle = '0deg'
 }
 
+function switchPlayer() {
+    // toggle currentPlayer between player1 and player2
+    currentPlayer = currentPlayer === player1 ? player2 : player1;
+    info.textContent = `${currentPlayer}: Your turn to SHOOT!`
+    blinkElement(info)
+    console.log(currentPlayer)
+}
 
 
 function game(){
-
-
 
     player1 = new Gameboard('player1')
     player2 = new Gameboard('player2')
 
     currentPlayer = player1
-
-
     console.log(currentPlayer.name)
-
-
     displayBoard(player1.board)
+
     currentPlayer = player2
     console.log(currentPlayer.name)
     displayBoard(player2.board)
@@ -440,8 +454,8 @@ function game(){
    
     
     console.log(currentPlayer.name)
-    // currentPlayer = player1
-    // console.log(currentPlayer.name)
+    currentPlayer = player1
+    console.log(currentPlayer.name)
     
 }
 
