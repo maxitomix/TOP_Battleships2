@@ -440,8 +440,8 @@ function game(){
    
     
     console.log(currentPlayer.name)
-    currentPlayer = player1
-    console.log(currentPlayer.name)
+    // currentPlayer = player1
+    // console.log(currentPlayer.name)
     
 }
 
