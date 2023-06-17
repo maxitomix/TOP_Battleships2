@@ -13,6 +13,7 @@ let rosterShips = []
 let player1;
 let player2;
 let isPlacingShips = true
+let RandomShotTracker = []
 //-------------------
 
 
@@ -104,6 +105,8 @@ function reset(){
     roster.innerHTML = '';
     controls.innerHTML = '';
     isPlacingShips = true;
+    info.style.fontSize = '';
+    RandomShotTracker = []
     info.textContent = 'Player 1: Place your ships'
     game()
 }
@@ -299,12 +302,16 @@ function cellClickLogic(cell){
                 cell.classList.add('hit') 
                 info.textContent = `Its a HIT! You sank a ${ship.name}`
                 console.log(`Its a HIT! You sank a ${ship.name}`)  
+                info.style.fontSize = '2rem';
                 blinkElement(info)
                 currentPlayer.ships = currentPlayer.ships.filter(x => x.name !== ship.name)
                 console.log(currentPlayer.ships)
 
-                checkForGameEnd()
-                switchPlayer()
+                setTimeout(() => {
+                    info.style.fontSize = '';
+                    checkForGameEnd()
+                    switchPlayer()
+                }, 2000)
 
             } else{
 
@@ -330,9 +337,11 @@ function cellClickLogic(cell){
 
 function checkForGameEnd(){
     if(currentPlayer.ships.length === 0) {
+        isPlacingShips = true
         setTimeout(function(){
-            console.log(`You won! All ships sunk`);
+            console.log(` ${currentPlayer}You won! All ships sunk`);
             info.textContent = `You won! All ships sunk`
+            info.style.fontSize = '4rem';
             blinkElement(info)
         }, 1000)
         setTimeout(function(){
@@ -427,16 +436,41 @@ function placeShipsRandom(currentPlayer) {
 function switchPlayer() {
     // toggle currentPlayer between player1 and player2
     currentPlayer = currentPlayer === player1 ? player2 : player1;
-    info.textContent = `${currentPlayer}: Your turn to SHOOT!`
+    info.textContent = `${currentPlayer.name}: Your turn to SHOOT!`
     blinkElement(info)
-    console.log(currentPlayer)
+
+    if (currentPlayer === player2){
+        info.textContent = `${currentPlayer.name} is aiming....`
+        setTimeout(randomShoot, 3000)
+    }
+
+    console.log(currentPlayer.name)
 }
+
+function randomShoot(){
+
+    let x = (Math.floor(Math.random() * 10)).toString();
+    let y = (Math.floor(Math.random() * 10)).toString();
+    const grid = document.querySelector(`.grid[data-player="${player1.name}"]`);
+    const randomCell = grid.querySelector(`.cell[data-coord="${x},${y}"]`);
+    console.log('random', x, y)
+    console.log(grid)
+    console.log(`.grid[data-coord="${x},${y}"]`)
+    console.log(randomCell)
+    
+    if (!RandomShotTracker.includes(randomCell)){
+        RandomShotTracker.push(randomCell)
+        cellClickLogic(randomCell)}
+}
+
+
 
 
 function game(){
 
     player1 = new Gameboard('player1')
     player2 = new Gameboard('player2')
+
 
     currentPlayer = player1
     console.log(currentPlayer.name)
@@ -456,6 +490,7 @@ function game(){
     console.log(currentPlayer.name)
     currentPlayer = player1
     console.log(currentPlayer.name)
+    
     
 }
 
