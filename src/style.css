@@ -1,17 +1,22 @@
+
 .header{
-    border: 2px solid red;
+    width: 100vw;
+    text-align: center;
+    align-items: center;
 }
 
-.hello {
-    color: red;
+h1{
+    font-size: xx-large;
 }
+
 
 body{
-    height: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    background-color: azure
 }
 
 .grid{
@@ -89,18 +94,21 @@ body{
 
 
 
+
 .destroyer-roster{
     width: 30px;
     height: 10px;
+    cursor: pointer;
 }
 
 .destroyer{
-    background-color: brown
+    background-color: rgb(243, 140, 29)
 }
 
 .battleship-roster{
     width: 40px;
     height: 10px;
+    cursor: pointer;
 }
 
 .battleship{
@@ -110,6 +118,7 @@ body{
 .submarine-roster{
     width: 30px;
     height: 10px;
+    
 }
 
 .submarine{
@@ -118,6 +127,7 @@ body{
 .carrier-roster{
     width: 50px;
     height: 10px;
+    cursor: pointer;
 }
 
 .carrier{
@@ -127,6 +137,8 @@ body{
 .tug-roster{
     width: 20px;
     height: 10px;
+    cursor: pointer;
+
 }
 
 .tug{
@@ -140,6 +152,52 @@ body{
     animation: blinker 1s linear infinite;
 }
 
+.player2{
+    background-color: aquamarine;
+}
+
 @keyframes blinker {
     75% { opacity: 0; }
+}
+
+
+@media (max-width: 900px) {
+    
+    .container{
+
+        flex-wrap: wrap;
+        gap: .5rem;
+        align-items: center;
+        justify-content: center;
+        overflow: auto;
+        margin: 0;
+    }
+
+    .roster .roster-area{
+        width: 400px;
+        height: 50px;
+        background-color:antiquewhite;
+        display: flex;
+        /* flex-direction: column; */
+        align-items: center;
+        justify-content: center;
+        gap: .25rem;
+        margin: none;
+    }
+
+    .controls{
+
+        margin: .25rem;
+        gap: .25rem;
+    }
+
+    .grid{
+        width: 350px;
+        height: 350px;
+    }
+
+    h1{
+        margin: .25rem;
+    }   
+
 }

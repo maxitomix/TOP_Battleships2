@@ -164,6 +164,10 @@ function Gameboard(name){
 
                 cell.dataset.content = name;
                 cell.classList.add(name);
+
+                if (grid.dataset.player === 'player2') {
+                    cell.classList.add('player2');
+                }
             }
 
 
@@ -281,6 +285,7 @@ function cellClickLogic(cell){
             cell.classList.add('miss') 
             info.textContent = 'Miss...'
             blinkElement(info)
+            blinkElement(cell)
             console.log('Miss...')  
             switchPlayer()
         }
@@ -304,6 +309,7 @@ function cellClickLogic(cell){
                 console.log(`Its a HIT! You sank a ${ship.name}`)  
                 info.style.fontSize = '2rem';
                 blinkElement(info)
+                blinkElement(cell)
                 currentPlayer.ships = currentPlayer.ships.filter(x => x.name !== ship.name)
                 console.log(currentPlayer.ships)
 
@@ -320,6 +326,7 @@ function cellClickLogic(cell){
                 info.textContent = 'Its a HIT!'
                 console.log('Its a HIT!')  
                 blinkElement(info)
+                blinkElement(cell)
                 switchPlayer()
         
             }
@@ -460,7 +467,10 @@ function randomShoot(){
     
     if (!RandomShotTracker.includes(randomCell)){
         RandomShotTracker.push(randomCell)
-        cellClickLogic(randomCell)}
+        cellClickLogic(randomCell)
+    }else{
+        randomShoot()
+    }
 }
 
 
@@ -484,6 +494,7 @@ function game(){
     displayRoster();
     displayControls();
 
+    currentPlayer = player2
     placeShipsRandom(currentPlayer)
    
     
